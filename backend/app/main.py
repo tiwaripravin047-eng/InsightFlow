@@ -26,6 +26,18 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
+@app.on_event("startup")
+def startup_event():
+    """Ensure database tables exist on startup (especially for local SQLite dev)."""
+    try:
+        from app.db.session import engine
+        from app.db.models import Base
+        Base.metadata.create_all(bind=engine)
+        logger.info("database_tables_initialized")
+    except Exception as exc:
+        logger.warning("database_table_initialization_skipped", error=str(exc))
+
+
 # Correlation ID Middleware (Track C / Observability)
 @app.middleware("http")
 async def correlation_id_middleware(request: Request, call_next):
