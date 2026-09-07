@@ -5,7 +5,7 @@
 
 ---
 
-## 1. Problem Statement (SIH PS1)
+## 1. Problem Statement (PS1)
 
 Organizations collect thousands of unstructured feedback entries across diverse touchpoints (surveys, support tickets, social channels, portals). Decision-makers face:
 - **Noise and latency**: Critical issues stay buried under voluminous general feedback.
