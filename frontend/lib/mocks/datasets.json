@@ -1,0 +1,30 @@
+[
+  {
+    "id": "demo-college-2026",
+    "name": "College Feedback Q3 2026",
+    "domain": "college",
+    "uploaded_at": "2026-09-01T08:00:00Z",
+    "column_mapping": {
+      "text": "feedback_text",
+      "timestamp": "created_at",
+      "category": "department",
+      "source": "channel",
+      "rating": "score"
+    },
+    "total_feedback": 5000
+  },
+  {
+    "id": "city-hospital-q2",
+    "name": "City Hospital Patient Experience",
+    "domain": "hospital",
+    "uploaded_at": "2026-08-15T10:30:00Z",
+    "column_mapping": {
+      "text": "patient_notes",
+      "timestamp": "visit_date",
+      "category": "ward",
+      "source": "kiosk",
+      "rating": "stars"
+    },
+    "total_feedback": 3420
+  }
+]

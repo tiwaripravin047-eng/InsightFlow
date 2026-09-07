@@ -1,0 +1,111 @@
+[
+  {
+    "id": "fb-food-101",
+    "text": "Food is cold every time by 7pm in dining hall B. Rotis are like rubber.",
+    "sentiment": "negative",
+    "sentiment_confidence": 0.94,
+    "topic": "Food Quality",
+    "aspects": [
+      { "aspect": "Food Temperature", "sentiment": "negative", "confidence": 0.96 },
+      { "aspect": "Dining Hall B", "sentiment": "negative", "confidence": 0.91 }
+    ],
+    "emotion": "frustration",
+    "intent": "complaint",
+    "urgency": "medium",
+    "severity": "high",
+    "date": "2026-09-01",
+    "category": "Hostel",
+    "source": "survey",
+    "language": "en",
+    "similar_feedback": [
+      { "feedback_id": "fb-food-102", "similarity_score": 0.88 },
+      { "feedback_id": "fb-food-103", "similarity_score": 0.81 }
+    ],
+    "related_issue_id": "iss-001"
+  },
+  {
+    "id": "fb-food-102",
+    "text": "Mess food quality has drastically dropped over the past 2 weeks. Dal is completely watery.",
+    "sentiment": "negative",
+    "sentiment_confidence": 0.91,
+    "topic": "Food Quality",
+    "aspects": [
+      { "aspect": "Mess Food", "sentiment": "negative", "confidence": 0.93 }
+    ],
+    "emotion": "disappointment",
+    "intent": "complaint",
+    "urgency": "medium",
+    "severity": "high",
+    "date": "2026-09-03",
+    "category": "Hostel",
+    "source": "mobile_app",
+    "language": "en",
+    "similar_feedback": [
+      { "feedback_id": "fb-food-101", "similarity_score": 0.88 }
+    ],
+    "related_issue_id": "iss-001"
+  },
+  {
+    "id": "fb-wifi-201",
+    "text": "wifi keeps disconnecting in library 2nd floor every 10 minutes.",
+    "sentiment": "negative",
+    "sentiment_confidence": 0.96,
+    "topic": "Wi-Fi Reliability",
+    "aspects": [
+      { "aspect": "Wi-Fi", "sentiment": "negative", "confidence": 0.97 },
+      { "aspect": "Library", "sentiment": "negative", "confidence": 0.89 }
+    ],
+    "emotion": "anger",
+    "intent": "complaint",
+    "urgency": "high",
+    "severity": "critical",
+    "date": "2026-09-02",
+    "category": "Library",
+    "source": "qr_code",
+    "language": "en",
+    "similar_feedback": [
+      { "feedback_id": "fb-wifi-202", "similarity_score": 0.92 }
+    ],
+    "related_issue_id": "iss-002"
+  },
+  {
+    "id": "fb-park-301",
+    "text": "South gate parking area is jammed starting at 8:30 AM every morning.",
+    "sentiment": "negative",
+    "sentiment_confidence": 0.88,
+    "topic": "Parking Facilities",
+    "aspects": [
+      { "aspect": "Parking Gate", "sentiment": "negative", "confidence": 0.90 }
+    ],
+    "emotion": "frustration",
+    "intent": "complaint",
+    "urgency": "low",
+    "severity": "medium",
+    "date": "2026-09-02",
+    "category": "Campus Logistics",
+    "source": "web_portal",
+    "language": "en",
+    "similar_feedback": [],
+    "related_issue_id": "iss-003"
+  },
+  {
+    "id": "fb-lib-401",
+    "text": "The new digital IEEE portal access from hostel rooms is smooth and fast.",
+    "sentiment": "positive",
+    "sentiment_confidence": 0.98,
+    "topic": "Digital Resources",
+    "aspects": [
+      { "aspect": "IEEE Portal", "sentiment": "positive", "confidence": 0.99 }
+    ],
+    "emotion": "satisfaction",
+    "intent": "praise",
+    "urgency": "low",
+    "severity": "low",
+    "date": "2026-09-01",
+    "category": "Library",
+    "source": "survey",
+    "language": "en",
+    "similar_feedback": [],
+    "related_issue_id": null
+  }
+]

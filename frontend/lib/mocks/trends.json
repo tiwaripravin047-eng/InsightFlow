@@ -1,0 +1,27 @@
+{
+  "series": [
+    { "date": "2026-08-08", "volume": 12, "negative_ratio": 0.60 },
+    { "date": "2026-08-12", "volume": 15, "negative_ratio": 0.58 },
+    { "date": "2026-08-16", "volume": 19, "negative_ratio": 0.65 },
+    { "date": "2026-08-20", "volume": 24, "negative_ratio": 0.72 },
+    { "date": "2026-08-24", "volume": 28, "negative_ratio": 0.75 },
+    { "date": "2026-08-28", "volume": 35, "negative_ratio": 0.82 },
+    { "date": "2026-09-01", "volume": 42, "negative_ratio": 0.81 },
+    { "date": "2026-09-05", "volume": 39, "negative_ratio": 0.84 }
+  ],
+  "compare": {
+    "improved": [
+      { "topic": "Digital Catalog Access", "change_percent": 14.5, "evidence_insight_id": "ins-library-hours-004" }
+    ],
+    "worsened": [
+      { "topic": "Food Quality", "change_percent": 37.0, "evidence_insight_id": "ins-food-quality-001" },
+      { "topic": "Wi-Fi Reliability", "change_percent": 31.0, "evidence_insight_id": "ins-wifi-reliability-002" }
+    ],
+    "emerging": [
+      { "topic": "Parking Facilities", "first_seen": "2026-09-02", "volume": 58, "evidence_insight_id": "ins-parking-emerging-003" }
+    ],
+    "stable": [
+      { "topic": "Lab Equipment Maintenance", "change_percent": 1.2, "evidence_insight_id": "ins-lab-005" }
+    ]
+  }
+}

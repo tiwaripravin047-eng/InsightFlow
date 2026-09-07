@@ -1,0 +1,38 @@
+[
+  {
+    "id": "act-001",
+    "issue_id": "iss-001",
+    "title": "Inspect food serving temperature & warmer bain-marie units in Dining Hall B",
+    "status": "in_progress",
+    "suggested_owner": "Hostel Affairs & Mess Committee",
+    "priority": "high",
+    "outcome_before": null,
+    "outcome_after": null,
+    "created_at": "2026-09-02T14:30:00Z",
+    "resolved_at": null
+  },
+  {
+    "id": "act-002",
+    "issue_id": "iss-002",
+    "title": "Inspect access-point coverage & channel interference in Library 2nd floor",
+    "status": "open",
+    "suggested_owner": "IT Infrastructure Team",
+    "priority": "critical",
+    "outcome_before": null,
+    "outcome_after": null,
+    "created_at": "2026-09-03T11:15:00Z",
+    "resolved_at": null
+  },
+  {
+    "id": "act-003",
+    "issue_id": "iss-003",
+    "title": "Open overflow lot gate 4 during 8:00 AM - 9:30 AM arrival peak",
+    "status": "resolved",
+    "suggested_owner": "Campus Security",
+    "priority": "medium",
+    "outcome_before": 58,
+    "outcome_after": 14,
+    "created_at": "2026-09-03T16:00:00Z",
+    "resolved_at": "2026-09-06T18:00:00Z"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "status": "complete",
+  "progress_percent": 100,
+  "current_stage": "insight_generation",
+  "rows_processed": 5000,
+  "rows_total": 5000,
+  "validation_summary": {
+    "empty_text_rows": 4,
+    "duplicate_rows": 12,
+    "invalid_dates": 0
+  },
+  "error": null
+}

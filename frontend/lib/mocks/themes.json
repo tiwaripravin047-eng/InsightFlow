@@ -1,0 +1,107 @@
+[
+  {
+    "id": "thm-food-01",
+    "label": "Food & Dining",
+    "volume": 620,
+    "sentiment_breakdown": {
+      "negative": 0.58,
+      "neutral": 0.22,
+      "positive": 0.20
+    },
+    "trend": "rising",
+    "sub_themes": [
+      {
+        "id": "sub-temp-01",
+        "label": "Temperature & Freshness",
+        "volume": 214,
+        "sentiment_breakdown": { "negative": 0.81, "neutral": 0.14, "positive": 0.05 }
+      },
+      {
+        "id": "sub-price-02",
+        "label": "Cafeteria Pricing",
+        "volume": 140,
+        "sentiment_breakdown": { "negative": 0.40, "neutral": 0.45, "positive": 0.15 }
+      },
+      {
+        "id": "sub-hygiene-03",
+        "label": "Cutlery & Hygiene",
+        "volume": 110,
+        "sentiment_breakdown": { "negative": 0.65, "neutral": 0.25, "positive": 0.10 }
+      },
+      {
+        "id": "sub-variety-04",
+        "label": "Menu Variety",
+        "volume": 156,
+        "sentiment_breakdown": { "negative": 0.32, "neutral": 0.28, "positive": 0.40 }
+      }
+    ]
+  },
+  {
+    "id": "thm-campus-it-02",
+    "label": "Campus IT & Connectivity",
+    "volume": 840,
+    "sentiment_breakdown": {
+      "negative": 0.62,
+      "neutral": 0.20,
+      "positive": 0.18
+    },
+    "trend": "rising",
+    "sub_themes": [
+      {
+        "id": "sub-wifi-01",
+        "label": "Wi-Fi Coverage",
+        "volume": 328,
+        "sentiment_breakdown": { "negative": 0.88, "neutral": 0.09, "positive": 0.03 }
+      },
+      {
+        "id": "sub-portal-02",
+        "label": "Student Portal Login",
+        "volume": 180,
+        "sentiment_breakdown": { "negative": 0.45, "neutral": 0.35, "positive": 0.20 }
+      },
+      {
+        "id": "sub-lab-pcs-03",
+        "label": "Lab Computer Hardware",
+        "volume": 148,
+        "sentiment_breakdown": { "negative": 0.38, "neutral": 0.32, "positive": 0.30 }
+      },
+      {
+        "id": "sub-digital-lib-04",
+        "label": "Digital Library Proxy",
+        "volume": 184,
+        "sentiment_breakdown": { "negative": 0.08, "neutral": 0.18, "positive": 0.74 }
+      }
+    ]
+  },
+  {
+    "id": "thm-infrastructure-03",
+    "label": "Infrastructure & Facilities",
+    "volume": 490,
+    "sentiment_breakdown": {
+      "negative": 0.42,
+      "neutral": 0.34,
+      "positive": 0.24
+    },
+    "trend": "stable",
+    "sub_themes": [
+      {
+        "id": "sub-parking-01",
+        "label": "Parking & Vehicle Gates",
+        "volume": 162,
+        "sentiment_breakdown": { "negative": 0.68, "neutral": 0.22, "positive": 0.10 }
+      },
+      {
+        "id": "sub-hvac-02",
+        "label": "Hostel Water & Electricity",
+        "volume": 178,
+        "sentiment_breakdown": { "negative": 0.35, "neutral": 0.45, "positive": 0.20 }
+      },
+      {
+        "id": "sub-study-03",
+        "label": "Library Study Rooms",
+        "volume": 150,
+        "sentiment_breakdown": { "negative": 0.20, "neutral": 0.30, "positive": 0.50 }
+      }
+    ]
+  }
+]

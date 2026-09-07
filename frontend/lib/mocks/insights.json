@@ -1,0 +1,166 @@
+[
+  {
+    "id": "ins-food-quality-001",
+    "dataset_id": "demo-college-2026",
+    "title": "Food Quality is the fastest-growing negative issue this month",
+    "topic_id": "top-food-01",
+    "topic_label": "Food Quality",
+    "sentiment": "negative",
+    "severity": "high",
+    "priority_score": 87,
+    "priority_factors": {
+      "sentiment_severity": 0.81,
+      "normalized_frequency": 0.42,
+      "growth_rate": 0.37,
+      "recurrence": 0.55,
+      "urgency_signal": 0.3
+    },
+    "trend": "rising",
+    "change_percent": 37.0,
+    "volume": 214,
+    "unique_issue_count": 178,
+    "affected_categories": ["Hostel", "Cafeteria"],
+    "likely_drivers": [
+      { "topic": "Serving Temperature", "correlation_strength": 0.58 },
+      { "topic": "Evening Meal Freshness", "correlation_strength": 0.49 }
+    ],
+    "recommended_actions": [
+      "Investigate food serving temperature during evening dinner shifts",
+      "Review peak-hour serving process in Hostel Mess B"
+    ],
+    "confidence": 0.79,
+    "confidence_factors": {
+      "sample_size": 214,
+      "topic_coherence": 0.71,
+      "duplicate_ratio": 0.17
+    },
+    "model_versions": {
+      "sentiment": "roberta-sentiment-v1",
+      "embedding": "minilm-l6-v2",
+      "pipeline": "v1.2"
+    },
+    "generated_at": "2026-09-06T00:00:00Z"
+  },
+  {
+    "id": "ins-wifi-reliability-002",
+    "dataset_id": "demo-college-2026",
+    "title": "Wi-Fi disconnections frequently reported in Library and CS Labs",
+    "topic_id": "top-wifi-02",
+    "topic_label": "Wi-Fi Reliability",
+    "sentiment": "negative",
+    "severity": "critical",
+    "priority_score": 92,
+    "priority_factors": {
+      "sentiment_severity": 0.88,
+      "normalized_frequency": 0.65,
+      "growth_rate": 0.31,
+      "recurrence": 0.72,
+      "urgency_signal": 0.45
+    },
+    "trend": "rising",
+    "change_percent": 31.0,
+    "volume": 328,
+    "unique_issue_count": 290,
+    "affected_categories": ["Library", "Academic Block"],
+    "likely_drivers": [
+      { "topic": "Access Point Overload", "correlation_strength": 0.64 },
+      { "topic": "Peak Study Hours", "correlation_strength": 0.52 }
+    ],
+    "recommended_actions": [
+      "Inspect access-point coverage and throughput in Central Library floor 2",
+      "Provision backup AP channel routing during evening exam study hours"
+    ],
+    "confidence": 0.85,
+    "confidence_factors": {
+      "sample_size": 328,
+      "topic_coherence": 0.82,
+      "duplicate_ratio": 0.12
+    },
+    "model_versions": {
+      "sentiment": "roberta-sentiment-v1",
+      "embedding": "minilm-l6-v2",
+      "pipeline": "v1.2"
+    },
+    "generated_at": "2026-09-06T00:00:00Z"
+  },
+  {
+    "id": "ins-parking-emerging-003",
+    "dataset_id": "demo-college-2026",
+    "title": "South Gate Parking overflow emerging following permit regulation change",
+    "topic_id": "top-parking-03",
+    "topic_label": "Parking Facilities",
+    "sentiment": "negative",
+    "severity": "medium",
+    "priority_score": 64,
+    "priority_factors": {
+      "sentiment_severity": 0.62,
+      "normalized_frequency": 0.22,
+      "growth_rate": 0.85,
+      "recurrence": 0.35,
+      "urgency_signal": 0.2
+    },
+    "trend": "emerging",
+    "change_percent": 85.0,
+    "volume": 58,
+    "unique_issue_count": 52,
+    "affected_categories": ["Campus Logistics", "Security"],
+    "likely_drivers": [
+      { "topic": "Gate 3 Construction", "correlation_strength": 0.61 }
+    ],
+    "recommended_actions": [
+      "Open overflow lot near sports arena during morning arrival window"
+    ],
+    "confidence": 0.72,
+    "confidence_factors": {
+      "sample_size": 58,
+      "topic_coherence": 0.68,
+      "duplicate_ratio": 0.10
+    },
+    "model_versions": {
+      "sentiment": "roberta-sentiment-v1",
+      "embedding": "minilm-l6-v2",
+      "pipeline": "v1.2"
+    },
+    "generated_at": "2026-09-06T00:00:00Z"
+  },
+  {
+    "id": "ins-library-hours-004",
+    "dataset_id": "demo-college-2026",
+    "title": "Extended digital catalog access positively received across departments",
+    "topic_id": "top-library-04",
+    "topic_label": "Digital Resources",
+    "sentiment": "positive",
+    "severity": "low",
+    "priority_score": 28,
+    "priority_factors": {
+      "sentiment_severity": 0.12,
+      "normalized_frequency": 0.38,
+      "growth_rate": 0.15,
+      "recurrence": 0.40,
+      "urgency_signal": 0.05
+    },
+    "trend": "declining",
+    "change_percent": -12.0,
+    "volume": 184,
+    "unique_issue_count": 160,
+    "affected_categories": ["Library", "Academics"],
+    "likely_drivers": [
+      { "topic": "Remote Journal Portal", "correlation_strength": 0.71 }
+    ],
+    "recommended_actions": [
+      "Maintain 24/7 off-campus proxy licensing"
+    ],
+    "confidence": 0.91,
+    "confidence_factors": {
+      "sample_size": 184,
+      "topic_coherence": 0.88,
+      "duplicate_ratio": 0.15
+    },
+    "model_versions": {
+      "sentiment": "roberta-sentiment-v1",
+      "embedding": "minilm-l6-v2",
+      "pipeline": "v1.2"
+    },
+    "generated_at": "2026-09-06T00:00:00Z"
+  }
+]

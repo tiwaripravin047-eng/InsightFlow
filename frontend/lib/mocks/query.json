@@ -1,0 +1,36 @@
+{
+  "What got worse this week?": {
+    "answer": "Negative feedback increased 18% this week, primarily driven by Wi-Fi disconnections in the Library and food temperature complaints in Hostel Dining Hall B.",
+    "computed_data": {
+      "change_percent": 18.0,
+      "top_drivers": ["Wi-Fi Reliability", "Food Quality"]
+    },
+    "evidence_insight_ids": ["ins-wifi-reliability-002", "ins-food-quality-001"],
+    "filters_applied": {
+      "date_from": "2026-08-31",
+      "date_to": "2026-09-06"
+    },
+    "answerable": true
+  },
+  "default": {
+    "answer": "Analysis across 5,000 feedback records indicates 2 critical areas requiring immediate operational triage: Wi-Fi capacity in central study areas (328 mentions, 88% negative) and food quality during evening mess service (214 mentions, +37% growth).",
+    "computed_data": {
+      "total_feedback": 5000,
+      "critical_issues_count": 2,
+      "top_drivers": ["Wi-Fi Reliability", "Food Quality"]
+    },
+    "evidence_insight_ids": ["ins-wifi-reliability-002", "ins-food-quality-001"],
+    "filters_applied": {
+      "date_from": "2026-08-01",
+      "date_to": "2026-09-06"
+    },
+    "answerable": true
+  },
+  "unanswerable": {
+    "answer": "The current dataset does not contain student financial aid or tuition breakdown data. Try querying about hostel facilities, cafeteria dining, IT connectivity, or academic labs.",
+    "computed_data": {},
+    "evidence_insight_ids": [],
+    "filters_applied": {},
+    "answerable": false
+  }
+}

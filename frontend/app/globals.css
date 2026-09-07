@@ -1,0 +1,242 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+
+    /* Sentiment Tokens */
+    --sentiment-positive: 152 69% 40%;
+    --sentiment-positive-foreground: 152 76% 20%;
+    --sentiment-positive-bg: 149 80% 96%;
+    --sentiment-positive-border: 149 60% 86%;
+
+    --sentiment-negative: 0 72% 51%;
+    --sentiment-negative-foreground: 0 74% 28%;
+    --sentiment-negative-bg: 0 86% 97%;
+    --sentiment-negative-border: 0 70% 90%;
+
+    --sentiment-neutral: 215 16% 47%;
+    --sentiment-neutral-foreground: 215 25% 27%;
+    --sentiment-neutral-bg: 210 40% 96%;
+    --sentiment-neutral-border: 214 32% 91%;
+
+    --sentiment-mixed: 262 52% 47%;
+    --sentiment-mixed-foreground: 262 60% 28%;
+    --sentiment-mixed-bg: 262 80% 97%;
+    --sentiment-mixed-border: 262 60% 90%;
+
+    /* Severity Tokens */
+    --severity-low: 142 71% 45%;
+    --severity-low-foreground: 142 76% 22%;
+    --severity-low-bg: 138 76% 97%;
+    --severity-low-border: 140 60% 88%;
+
+    --severity-medium: 38 92% 50%;
+    --severity-medium-foreground: 32 95% 26%;
+    --severity-medium-bg: 48 96% 96%;
+    --severity-medium-border: 45 90% 85%;
+
+    --severity-high: 16 90% 52%;
+    --severity-high-foreground: 15 85% 28%;
+    --severity-high-bg: 24 100% 97%;
+    --severity-high-border: 20 90% 88%;
+
+    --severity-critical: 350 89% 48%;
+    --severity-critical-foreground: 350 92% 22%;
+    --severity-critical-bg: 350 100% 97%;
+    --severity-critical-border: 350 85% 88%;
+
+    /* Status Tokens */
+    --status-open: 217 91% 60%;
+    --status-open-foreground: 224 76% 30%;
+    --status-open-bg: 214 100% 97%;
+    --status-open-border: 214 90% 88%;
+
+    --status-in-progress: 38 92% 50%;
+    --status-in-progress-foreground: 32 95% 26%;
+    --status-in-progress-bg: 48 96% 96%;
+    --status-in-progress-border: 45 90% 85%;
+
+    --status-resolved: 152 69% 40%;
+    --status-resolved-foreground: 152 76% 20%;
+    --status-resolved-bg: 149 80% 96%;
+    --status-resolved-border: 149 60% 86%;
+
+    --status-verified: 262 52% 47%;
+    --status-verified-foreground: 262 60% 28%;
+    --status-verified-bg: 262 80% 97%;
+    --status-verified-border: 262 60% 90%;
+
+    /* Trend Tokens */
+    --trend-rising: 0 72% 51%;
+    --trend-rising-foreground: 0 74% 28%;
+    --trend-rising-bg: 0 86% 97%;
+
+    --trend-declining: 152 69% 40%;
+    --trend-declining-foreground: 152 76% 20%;
+    --trend-declining-bg: 149 80% 96%;
+
+    --trend-stable: 215 16% 47%;
+    --trend-stable-foreground: 215 25% 27%;
+    --trend-stable-bg: 210 40% 96%;
+
+    --trend-emerging: 270 65% 55%;
+    --trend-emerging-foreground: 270 70% 30%;
+    --trend-emerging-bg: 270 85% 97%;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+
+    /* Dark Mode Sentiment */
+    --sentiment-positive: 152 69% 50%;
+    --sentiment-positive-foreground: 149 80% 96%;
+    --sentiment-positive-bg: 152 76% 12%;
+    --sentiment-positive-border: 152 60% 22%;
+
+    --sentiment-negative: 0 72% 60%;
+    --sentiment-negative-foreground: 0 86% 97%;
+    --sentiment-negative-bg: 0 74% 14%;
+    --sentiment-negative-border: 0 70% 24%;
+
+    --sentiment-neutral: 215 20% 65%;
+    --sentiment-neutral-foreground: 210 40% 98%;
+    --sentiment-neutral-bg: 217 33% 15%;
+    --sentiment-neutral-border: 217 33% 25%;
+
+    --sentiment-mixed: 262 60% 65%;
+    --sentiment-mixed-foreground: 262 80% 97%;
+    --sentiment-mixed-bg: 262 60% 15%;
+    --sentiment-mixed-border: 262 60% 25%;
+
+    /* Dark Mode Severity */
+    --severity-low: 142 71% 55%;
+    --severity-low-foreground: 138 76% 97%;
+    --severity-low-bg: 142 76% 12%;
+    --severity-low-border: 140 60% 22%;
+
+    --severity-medium: 38 92% 55%;
+    --severity-medium-foreground: 48 96% 96%;
+    --severity-medium-bg: 32 95% 14%;
+    --severity-medium-border: 45 90% 24%;
+
+    --severity-high: 16 90% 60%;
+    --severity-high-foreground: 24 100% 97%;
+    --severity-high-bg: 15 85% 15%;
+    --severity-high-border: 20 90% 25%;
+
+    --severity-critical: 350 89% 60%;
+    --severity-critical-foreground: 350 100% 97%;
+    --severity-critical-bg: 350 92% 15%;
+    --severity-critical-border: 350 85% 26%;
+
+    /* Dark Mode Status */
+    --status-open: 217 91% 65%;
+    --status-open-foreground: 214 100% 97%;
+    --status-open-bg: 224 76% 14%;
+    --status-open-border: 214 90% 24%;
+
+    --status-in-progress: 38 92% 55%;
+    --status-in-progress-foreground: 48 96% 96%;
+    --status-in-progress-bg: 32 95% 14%;
+    --status-in-progress-border: 45 90% 24%;
+
+    --status-resolved: 152 69% 50%;
+    --status-resolved-foreground: 149 80% 96%;
+    --status-resolved-bg: 152 76% 12%;
+    --status-resolved-border: 152 60% 22%;
+
+    --status-verified: 262 60% 65%;
+    --status-verified-foreground: 262 80% 97%;
+    --status-verified-bg: 262 60% 15%;
+    --status-verified-border: 262 60% 25%;
+
+    /* Dark Mode Trend */
+    --trend-rising: 0 72% 60%;
+    --trend-rising-foreground: 0 86% 97%;
+    --trend-rising-bg: 0 74% 14%;
+
+    --trend-declining: 152 69% 50%;
+    --trend-declining-foreground: 149 80% 96%;
+    --trend-declining-bg: 152 76% 12%;
+
+    --trend-stable: 215 20% 65%;
+    --trend-stable-foreground: 210 40% 98%;
+    --trend-stable-bg: 217 33% 15%;
+
+    --trend-emerging: 270 65% 65%;
+    --trend-emerging-foreground: 270 85% 97%;
+    --trend-emerging-bg: 270 70% 16%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Accessible focus visible outlines across all buttons and inputs */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}

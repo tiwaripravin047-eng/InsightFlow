@@ -1,0 +1,144 @@
+{
+  "ins-food-quality-001": {
+    "insight_id": "ins-food-quality-001",
+    "evidence_count": 214,
+    "representative_samples": [
+      {
+        "feedback_id": "fb-food-101",
+        "text": "Food is cold every time by 7pm in dining hall B. Rotis are like rubber.",
+        "sentiment": "negative",
+        "date": "2026-09-01"
+      },
+      {
+        "feedback_id": "fb-food-102",
+        "text": "Mess food quality has drastically dropped over the past 2 weeks. Dal is completely watery.",
+        "sentiment": "negative",
+        "date": "2026-09-03"
+      },
+      {
+        "feedback_id": "fb-food-103",
+        "text": "The dinner buffet runs out of clean cutlery and heated trays by 8pm.",
+        "sentiment": "negative",
+        "date": "2026-09-04"
+      },
+      {
+        "feedback_id": "fb-food-104",
+        "text": "Breakfast poha and idli are usually good, but dinner remains unpalatable.",
+        "sentiment": "neutral",
+        "date": "2026-09-05"
+      }
+    ],
+    "sentiment_distribution": {
+      "negative": 0.81,
+      "neutral": 0.14,
+      "positive": 0.05
+    },
+    "date_range": {
+      "from": "2026-08-01",
+      "to": "2026-09-06"
+    },
+    "filters_used": {
+      "topic_id": "top-food-01",
+      "dataset_id": "demo-college-2026"
+    }
+  },
+  "ins-wifi-reliability-002": {
+    "insight_id": "ins-wifi-reliability-002",
+    "evidence_count": 328,
+    "representative_samples": [
+      {
+        "feedback_id": "fb-wifi-201",
+        "text": "Wi-Fi keeps disconnecting every 5 minutes in the central library 2nd floor.",
+        "sentiment": "negative",
+        "date": "2026-09-02"
+      },
+      {
+        "feedback_id": "fb-wifi-202",
+        "text": "Unable to submit assignments on the campus network from hostel block C.",
+        "sentiment": "negative",
+        "date": "2026-09-04"
+      },
+      {
+        "feedback_id": "fb-wifi-203",
+        "text": "Eduroam connection drops whenever more than 30 people enter the lab.",
+        "sentiment": "negative",
+        "date": "2026-09-05"
+      }
+    ],
+    "sentiment_distribution": {
+      "negative": 0.88,
+      "neutral": 0.09,
+      "positive": 0.03
+    },
+    "date_range": {
+      "from": "2026-08-01",
+      "to": "2026-09-06"
+    },
+    "filters_used": {
+      "topic_id": "top-wifi-02",
+      "dataset_id": "demo-college-2026"
+    }
+  },
+  "ins-parking-emerging-003": {
+    "insight_id": "ins-parking-emerging-003",
+    "evidence_count": 58,
+    "representative_samples": [
+      {
+        "feedback_id": "fb-park-301",
+        "text": "South gate parking area is jammed starting at 8:30 AM every morning.",
+        "sentiment": "negative",
+        "date": "2026-09-02"
+      },
+      {
+        "feedback_id": "fb-park-302",
+        "text": "Two-wheeler parking passes are taking over 45 minutes to validate at the barrier.",
+        "sentiment": "negative",
+        "date": "2026-09-04"
+      }
+    ],
+    "sentiment_distribution": {
+      "negative": 0.76,
+      "neutral": 0.18,
+      "positive": 0.06
+    },
+    "date_range": {
+      "from": "2026-08-01",
+      "to": "2026-09-06"
+    },
+    "filters_used": {
+      "topic_id": "top-parking-03",
+      "dataset_id": "demo-college-2026"
+    }
+  },
+  "ins-library-hours-004": {
+    "insight_id": "ins-library-hours-004",
+    "evidence_count": 184,
+    "representative_samples": [
+      {
+        "feedback_id": "fb-lib-401",
+        "text": "The new digital IEEE portal access from hostel rooms is smooth and fast.",
+        "sentiment": "positive",
+        "date": "2026-09-01"
+      },
+      {
+        "feedback_id": "fb-lib-402",
+        "text": "Very happy with the digital catalog search speed.",
+        "sentiment": "positive",
+        "date": "2026-09-03"
+      }
+    ],
+    "sentiment_distribution": {
+      "negative": 0.08,
+      "neutral": 0.18,
+      "positive": 0.74
+    },
+    "date_range": {
+      "from": "2026-08-01",
+      "to": "2026-09-06"
+    },
+    "filters_used": {
+      "topic_id": "top-library-04",
+      "dataset_id": "demo-college-2026"
+    }
+  }
+}
