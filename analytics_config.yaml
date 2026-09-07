@@ -1,0 +1,41 @@
+# Feedback Intelligence OS - Analytics Configuration
+# All analytical constants, weights, and thresholds live here.
+# No magic numbers in Python code.
+
+priority_score:
+  weights:
+    w1_sentiment_severity: 0.35
+    w2_normalized_frequency: 0.20
+    w3_growth_rate: 0.20
+    w4_recurrence: 0.15
+    w5_urgency_signal: 0.10
+  confidence_penalty_multiplier: 0.20
+  scale: 100.0
+
+severity_thresholds:
+  critical: 80.0
+  high: 60.0
+  medium: 35.0
+  low: 0.0
+
+emerging_issues:
+  min_sample_size: 5
+  relative_growth_threshold: 0.25  # 25% relative negative growth
+  smoothing_window_days: 7
+  spike_multiplier: 2.5            # 2.5x standard deviation flagged as spike rather than established/emerging
+
+duplicate_detection:
+  similarity_threshold: 0.88       # Cosine similarity above this indicates near-duplicate
+
+driver_correlation:
+  min_correlation_threshold: 0.30  # Only show likely drivers with correlation >= 0.30
+  top_n_drivers: 3
+
+ingestion:
+  max_rows: 100000
+  max_file_size_mb: 25
+  allowed_mime_types:
+    - "text/csv"
+    - "application/csv"
+    - "text/plain"
+    - "application/vnd.ms-excel"
