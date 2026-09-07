@@ -49,12 +49,14 @@ def run_pipeline(dataset_id: uuid.UUID, run_id: uuid.UUID, db: Session) -> None:
         return
 
     try:
-        # 1. Validation & Cleaning
+        # 1. Validation, Language Detection & Cleaning
         tracker.update(stage="validation", rows_processed=total_rows, status="processing")
+        lang_detector = registry.get_language_detector()
         texts = []
         for fb in feedback_rows:
             cleaned = " ".join(fb.raw_text.strip().split())
             fb.cleaned_text = cleaned
+            fb.language = lang_detector.detect(fb.raw_text)
             texts.append(cleaned)
         db.commit()
 
@@ -63,34 +65,22 @@ def run_pipeline(dataset_id: uuid.UUID, run_id: uuid.UUID, db: Session) -> None:
         sentiment_model = registry.get_sentiment_model()
         sentiment_results = sentiment_model.predict_batch(texts, batch_size=32)
 
+        emotion_classifier = registry.get_emotion_model()
         for fb, res in zip(feedback_rows, sentiment_results):
             fb.sentiment = res.sentiment
             fb.sentiment_confidence = res.confidence
 
-            # Basic emotion/intent/urgency heuristics for feedback row enrichment
-            lower_text = fb.cleaned_text.lower()
-            if any(w in lower_text for w in ["immediately", "asap", "urgent", "danger", "critical"]):
-                fb.urgency = "high"
-            elif any(w in lower_text for w in ["soon", "quick", "bother", "issue"]):
-                fb.urgency = "medium"
-            else:
-                fb.urgency = "low"
-
-            if any(w in lower_text for w in ["suggest", "recommend", "could", "should", "feature", "please add"]):
-                fb.intent = "suggestion"
-            elif res.sentiment == "positive":
-                fb.intent = "praise"
-            elif any(w in lower_text for w in ["why", "how", "what", "where", "when", "?"]):
-                fb.intent = "question"
-            else:
-                fb.intent = "complaint"
-
-            if res.sentiment == "negative":
-                fb.emotion = "frustration" if fb.urgency == "medium" else ("anger" if fb.urgency == "high" else "disappointment")
-            elif res.sentiment == "positive":
-                fb.emotion = "satisfaction"
-            else:
+            # Granular emotion/intent/urgency with graceful degradation
+            try:
+                sig = emotion_classifier.classify(fb.cleaned_text, sentiment=res.sentiment)
+                fb.intent = sig.intent
+                fb.emotion = sig.emotion
+                fb.urgency = sig.urgency
+            except Exception as exc:
+                logger.warning("emotion_intent_classification_degraded", error=str(exc))
+                fb.intent = "complaint" if res.sentiment == "negative" else "praise"
                 fb.emotion = "neutral"
+                fb.urgency = "medium" if res.sentiment == "negative" else "low"
 
         db.commit()
 
@@ -103,10 +93,44 @@ def run_pipeline(dataset_id: uuid.UUID, run_id: uuid.UUID, db: Session) -> None:
             fb.embedding = emb
         db.commit()
 
+        # 3b. Duplicate Detection (P1)
+        duplicate_detector = registry.get_duplicate_detector()
+        try:
+            dup_clusters, overall_dup_ratio, overall_unique = duplicate_detector.find_duplicate_clusters(embeddings)
+            for fb, c_id in zip(feedback_rows, dup_clusters):
+                fb.duplicate_cluster_id = c_id
+            db.commit()
+        except Exception as exc:
+            logger.warning("duplicate_detection_degraded", error=str(exc))
+            overall_dup_ratio = 0.0
+
+        # 3c. Aspect Extraction (P1) with graceful degradation
+        aspect_model = registry.get_aspect_model()
+        aspect_records = []
+        for fb in feedback_rows:
+            try:
+                aspects = aspect_model.extract_aspects(fb.raw_text)
+                for asp in aspects:
+                    aspect_records.append(
+                        AspectSentiment(
+                            feedback_id=fb.id,
+                            aspect_text=asp.aspect,
+                            sentiment=asp.sentiment,
+                            confidence=asp.confidence,
+                        )
+                    )
+            except Exception as exc:
+                logger.warning("aspect_extraction_degraded", feedback_id=str(fb.id), error=str(exc))
+
+        if aspect_records:
+            db.add_all(aspect_records)
+            db.commit()
+
         # 4. Semantic Topic Discovery (BERTopic / HDBSCAN)
         tracker.update(stage="topic_discovery", rows_processed=total_rows)
         topic_engine = registry.get_topic_model()
         topic_clusters = topic_engine.discover_topics(texts, embeddings)
+
 
         # Persist discovered topics & map feedback items
         db_topics = []
@@ -194,6 +218,8 @@ def run_pipeline(dataset_id: uuid.UUID, run_id: uuid.UUID, db: Session) -> None:
 
             # NON-NEGOTIABLE EVIDENCE RULE: At least one feedback row linked
             evidence_ids = [fb.id for fb in cluster_fbs]
+            unique_clusters = len(set(fb.duplicate_cluster_id for fb in cluster_fbs if fb.duplicate_cluster_id)) or len(cluster_fbs)
+            cluster_dup_ratio = round((cluster_vol - unique_clusters) / cluster_vol, 2) if cluster_vol > 0 else 0.0
 
             insight = insight_repo.create(
                 dataset_id=dataset_id,
@@ -207,7 +233,7 @@ def run_pipeline(dataset_id: uuid.UUID, run_id: uuid.UUID, db: Session) -> None:
                 trend=trend_label,
                 change_percent=round(growth_rate * 100, 1),
                 volume=cluster_vol,
-                unique_issue_count=len(set(fb.raw_text for fb in cluster_fbs)),
+                unique_issue_count=unique_clusters,
                 affected_categories=aff_cats,
                 likely_drivers=drivers,
                 recommended_actions=recommended,
@@ -215,7 +241,7 @@ def run_pipeline(dataset_id: uuid.UUID, run_id: uuid.UUID, db: Session) -> None:
                 confidence_factors={
                     "sample_size": cluster_vol,
                     "topic_coherence": t.coherence_score or 0.70,
-                    "duplicate_ratio": 0.15,
+                    "duplicate_ratio": cluster_dup_ratio,
                 },
                 model_versions={
                     "sentiment": "cardiffnlp/twitter-roberta-base-sentiment-latest",
@@ -223,6 +249,7 @@ def run_pipeline(dataset_id: uuid.UUID, run_id: uuid.UUID, db: Session) -> None:
                     "pipeline": "v1.2",
                 },
             )
+
 
             # Create operational issue
             issue_repo.create_from_insight(

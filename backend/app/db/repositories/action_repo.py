@@ -18,6 +18,7 @@ class ActionRepository:
         insight_id: Optional[uuid.UUID] = None,
         suggested_owner: Optional[str] = None,
         priority: str = "high",
+        outcome_before: Optional[float] = None,
     ) -> Action:
         action = Action(
             title=title,
@@ -26,6 +27,7 @@ class ActionRepository:
             suggested_owner=suggested_owner,
             priority=priority,
             status="open",
+            outcome_before=outcome_before,
             created_at=datetime.utcnow(),
         )
         self.db.add(action)
@@ -54,8 +56,25 @@ class ActionRepository:
         action = self.get(action_id)
         if action:
             action.status = status
-            if status == "resolved":
+            if status in ("resolved", "verified") and not action.resolved_at:
                 action.resolved_at = datetime.utcnow()
             self.db.commit()
             self.db.refresh(action)
         return action
+
+    def update_outcome(
+        self,
+        action_id: uuid.UUID,
+        outcome_before: Optional[float] = None,
+        outcome_after: Optional[float] = None,
+    ) -> Optional[Action]:
+        action = self.get(action_id)
+        if action:
+            if outcome_before is not None:
+                action.outcome_before = outcome_before
+            if outcome_after is not None:
+                action.outcome_after = outcome_after
+            self.db.commit()
+            self.db.refresh(action)
+        return action
+
