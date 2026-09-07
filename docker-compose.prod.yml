@@ -1,0 +1,98 @@
+version: '3.8'
+
+# ==============================================================================
+# Feedback Intelligence OS (FIOS) — Production Docker Compose
+# Architecture per ARCHITECTURE.md §23
+# ==============================================================================
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: fios_prod_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Database password required in production}
+      POSTGRES_DB: ${POSTGRES_DB:-feedback_intelligence_prod}
+    volumes:
+      - prod_postgres_data:/var/lib/postgresql/data
+      - ./scripts/init_pgvector.sql:/docker-entrypoint-initdb.d/init_pgvector.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-feedback_intelligence_prod}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fios_prod_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: fios_prod_redis
+    restart: always
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-fios_secure_redis_pwd}
+    volumes:
+      - prod_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-fios_secure_redis_pwd}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - fios_prod_net
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fios_prod_api
+    restart: always
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-feedback_intelligence_prod}
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-fios_secure_redis_pwd}@redis:6379/0
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/health\")'"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - fios_prod_net
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: fios_prod_worker
+    restart: always
+    command: celery -A app.jobs worker --concurrency=4 --loglevel=info
+    env_file:
+      - .env
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-feedback_intelligence_prod}
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-fios_secure_redis_pwd}@redis:6379/0
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - fios_prod_net
+
+volumes:
+  prod_postgres_data:
+  prod_redis_data:
+
+networks:
+  fios_prod_net:
+    driver: bridge

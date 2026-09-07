@@ -12,7 +12,6 @@ from app.core.logging import logger
 from app.db.models.feedback import Feedback
 from app.db.repositories.dataset_repo import DatasetRepository
 from app.db.repositories.analysis_run_repo import AnalysisRunRepository
-from app.jobs.pipeline import process_dataset_task, run_pipeline
 
 
 class IngestionService:
@@ -147,6 +146,7 @@ class IngestionService:
         )
 
         # Trigger processing job
+        from app.jobs.pipeline import process_dataset_task, run_pipeline
         if run_in_background:
             try:
                 process_dataset_task.delay(str(dataset.id), str(run.id))

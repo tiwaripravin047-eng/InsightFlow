@@ -9,7 +9,10 @@ from app.db.models.action import Action
 from app.db.models.analysis_run import AnalysisRun
 from app.db.models.model_version import ModelVersion
 
+from app.db.session import Base
+
 __all__ = [
+    "Base",
     "Dataset",
     "Topic",
     "feedback_topics",

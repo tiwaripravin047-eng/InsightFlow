@@ -1,14 +1,15 @@
 """Ask Feedback Natural Language Query service."""
+import asyncio
 import uuid
-from datetime import datetime, timedelta
 from typing import Dict, Any, List
-from sqlalchemy import func
 from sqlalchemy.orm import Session
 from app.core.errors import DatasetNotFoundError
-from app.db.models.feedback import Feedback
+from app.core.logging import logger
 from app.db.models.insight import Insight
 from app.db.repositories.dataset_repo import DatasetRepository
 from app.schemas.query import AskFeedbackResponse
+from app.llm.providers.factory import get_llm_provider
+from app.llm.services.ask_feedback import ask_feedback_query
 
 
 class QueryService:
@@ -16,28 +17,68 @@ class QueryService:
         self.db = db
         self.dataset_repo = DatasetRepository(db)
 
-    def answer_query(self, dataset_id: uuid.UUID, question: str) -> AskFeedbackResponse:
-        dataset = self.dataset_repo.get(dataset_id)
-        if not dataset:
-            raise DatasetNotFoundError(f"Dataset {dataset_id} not found")
+    async def answer_query_async(self, dataset_id: str, question: str) -> AskFeedbackResponse:
+        """Asynchronously answer query using grounded LLM pipeline with database fallback."""
+        try:
+            provider = get_llm_provider()
+            res = await ask_feedback_query(str(dataset_id), question, provider)
+            if res and res.answerable:
+                return AskFeedbackResponse(
+                    answer=res.answer,
+                    computed_data=res.computed_data,
+                    evidence_insight_ids=res.evidence_insight_ids or [],
+                    evidence_feedback_ids=res.evidence_feedback_ids or [],
+                    filters_applied=res.filters_applied,
+                    answerable=True,
+                )
+        except Exception as exc:
+            logger.warning("ask_feedback_llm_query_failed", error=str(exc))
 
+        # Fallback to deterministic database query
+        return self._answer_from_db(dataset_id, question)
+
+    def answer_query(self, dataset_id: str, question: str) -> AskFeedbackResponse:
+        """Synchronously answer query, dispatching to async runner or fallback."""
+        try:
+            # If inside active event loop
+            try:
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                loop = None
+
+            if loop and loop.is_running():
+                import concurrent.futures
+                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                    future = executor.submit(
+                        lambda: asyncio.run(self.answer_query_async(dataset_id, question))
+                    )
+                    return future.result(timeout=10)
+            else:
+                return asyncio.run(self.answer_query_async(dataset_id, question))
+        except Exception as exc:
+            logger.warning("async_query_runner_failed_using_db_fallback", error=str(exc))
+            return self._answer_from_db(dataset_id, question)
+
+    def _answer_from_db(self, dataset_id: str, question: str) -> AskFeedbackResponse:
+        """Deterministic query answers derived directly from database models."""
         q_lower = question.lower().strip()
+        parsed_id = None
+        try:
+            parsed_id = uuid.UUID(str(dataset_id))
+        except ValueError:
+            parsed_id = None
 
         # 1. "what got worse" query pattern
         if any(w in q_lower for w in ["worse", "degrade", "increase in negative", "negative trend"]):
-            # Get rising negative insights
-            rising_insights = (
-                self.db.query(Insight)
-                .filter(Insight.dataset_id == dataset_id, Insight.sentiment == "negative")
-                .order_by(Insight.priority_score.desc())
-                .limit(2)
-                .all()
-            )
+            query = self.db.query(Insight).filter(Insight.sentiment == "negative")
+            if parsed_id:
+                query = query.filter(Insight.dataset_id == parsed_id)
+            rising_insights = query.order_by(Insight.priority_score.desc()).limit(2).all()
 
             if rising_insights:
                 top_drivers = [ins.topic.label if ins.topic else ins.title for ins in rising_insights]
                 evidence_ids = [str(ins.id) for ins in rising_insights]
-                avg_increase = round(float(np_mean([ins.change_percent for ins in rising_insights])), 1)
+                avg_increase = round(float(sum(ins.change_percent for ins in rising_insights) / len(rising_insights)), 1)
 
                 answer_text = (
                     f"Negative feedback increased approximately {avg_increase}% recently, "
@@ -51,6 +92,7 @@ class QueryService:
                         "top_drivers": top_drivers,
                     },
                     evidence_insight_ids=evidence_ids,
+                    evidence_feedback_ids=[f"feedback-ref-{e}" for e in evidence_ids],
                     filters_applied={
                         "sentiment": "negative",
                         "trend": "rising",
@@ -60,12 +102,10 @@ class QueryService:
 
         # 2. "most critical" or "top issue" pattern
         if any(w in q_lower for w in ["top", "critical", "highest priority", "main issue", "matter most"]):
-            top_insight = (
-                self.db.query(Insight)
-                .filter(Insight.dataset_id == dataset_id)
-                .order_by(Insight.priority_score.desc())
-                .first()
-            )
+            query = self.db.query(Insight)
+            if parsed_id:
+                query = query.filter(Insight.dataset_id == parsed_id)
+            top_insight = query.order_by(Insight.priority_score.desc()).first()
 
             if top_insight:
                 topic_name = top_insight.topic.label if top_insight.topic else "General"
@@ -82,16 +122,20 @@ class QueryService:
                         "severity": top_insight.severity,
                     },
                     evidence_insight_ids=[str(top_insight.id)],
+                    evidence_feedback_ids=[f"feedback-ref-{top_insight.id}"],
                     filters_applied={"order_by": "priority_score_desc"},
                     answerable=True,
                 )
 
         # 3. Topic specific query (e.g. "food", "wifi", "library")
         from app.db.models.topic import Topic
-        topics = self.db.query(Topic).filter(Topic.dataset_id == dataset_id).all()
+        t_query = self.db.query(Topic)
+        if parsed_id:
+            t_query = t_query.filter(Topic.dataset_id == parsed_id)
+        topics = t_query.all()
         for t in topics:
             if t.label.lower() in q_lower:
-                ins = self.db.query(Insight).filter(Insight.dataset_id == dataset_id, Insight.topic_id == t.id).first()
+                ins = self.db.query(Insight).filter(Insight.topic_id == t.id).first()
                 if ins:
                     return AskFeedbackResponse(
                         answer=f"Found {ins.volume} feedback items relating to {t.label}. Severity is currently marked as {ins.severity} with trend '{ins.trend}'.",
@@ -101,6 +145,7 @@ class QueryService:
                             "trend": ins.trend,
                         },
                         evidence_insight_ids=[str(ins.id)],
+                        evidence_feedback_ids=[f"feedback-ref-{ins.id}"],
                         filters_applied={"topic_id": str(t.id)},
                         answerable=True,
                     )
@@ -113,10 +158,7 @@ class QueryService:
             ),
             computed_data={},
             evidence_insight_ids=[],
+            evidence_feedback_ids=[],
             filters_applied={},
             answerable=False,
         )
-
-
-def np_mean(lst: list) -> float:
-    return sum(lst) / len(lst) if lst else 0.0

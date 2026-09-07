@@ -2,7 +2,14 @@
 import uuid
 from datetime import datetime
 from typing import List, Dict, Any, Optional
-import numpy as np
+try:
+    import numpy as np
+except ImportError:
+    class _NumpyFallback:
+        @staticmethod
+        def mean(lst):
+            return sum(lst) / len(lst) if lst else 0.0
+    np = _NumpyFallback()
 from sqlalchemy.orm import Session
 from app.db.session import SessionLocal
 from app.jobs.celery_app import celery_app
@@ -258,8 +265,13 @@ def run_pipeline(dataset_id: uuid.UUID, run_id: uuid.UUID, db: Session) -> None:
                 affected_segments=aff_cats,
             )
 
-        # Invalidate cache for dataset
+        # Invalidate cache for dataset (Analytics + LLM Cache)
         get_cache().invalidate_dataset(str(dataset_id))
+        try:
+            from app.llm.caching.cache_manager import llm_cache
+            llm_cache.invalidate_dataset(str(dataset_id))
+        except Exception as exc:
+            logger.warning("llm_cache_invalidation_failed", error=str(exc))
 
         # Mark run as complete
         dataset_repo.update_progress(dataset_id, processed_rows=total_rows, total_rows=total_rows)

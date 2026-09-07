@@ -1,6 +1,5 @@
 """Ask Feedback Natural Language Query API endpoint matching API_CONTRACTS.md §8."""
-import uuid
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.services.query_service import QueryService
@@ -11,12 +10,12 @@ router = APIRouter(prefix="/datasets/{dataset_id}/query", tags=["Ask Feedback"])
 
 
 @router.post("", response_model=ResponseEnvelope[AskFeedbackResponse])
-def query_dataset(
-    dataset_id: uuid.UUID,
+async def query_dataset(
     data: AskFeedbackRequest,
+    dataset_id: str = Path(..., description="ID or UUID of the dataset"),
     db: Session = Depends(get_db),
 ):
     """Execute natural language query against dataset analytics and evidence."""
     service = QueryService(db)
-    response = service.answer_query(dataset_id=dataset_id, question=data.question)
+    response = await service.answer_query_async(dataset_id=dataset_id, question=data.question)
     return ResponseEnvelope.success(response)

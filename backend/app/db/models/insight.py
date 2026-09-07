@@ -47,5 +47,6 @@ class Insight(Base):
     dataset = relationship("Dataset", back_populates="insights")
     topic = relationship("Topic", back_populates="insights")
     evidence_feedback = relationship("Feedback", secondary=insight_evidence, back_populates="evidence_insights")
+    evidence_items = relationship("Feedback", secondary=insight_evidence, overlaps="evidence_feedback,evidence_insights")
     issues = relationship("Issue", back_populates="insight", cascade="all, delete-orphan")
     actions = relationship("Action", back_populates="insight")

@@ -9,7 +9,8 @@ class AskFeedbackRequest(BaseModel):
 
 class AskFeedbackResponse(BaseModel):
     answer: str
-    computed_data: Dict[str, Any] = {}
-    evidence_insight_ids: List[str] = []
-    filters_applied: Dict[str, Any] = {}
+    computed_data: Dict[str, Any] = Field(default_factory=dict)
+    evidence_insight_ids: List[str] = Field(default_factory=list)
+    evidence_feedback_ids: List[str] = Field(default_factory=list)
+    filters_applied: Dict[str, Any] = Field(default_factory=dict)
     answerable: bool = True
