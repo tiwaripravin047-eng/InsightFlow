@@ -32,10 +32,11 @@ def get_llm_provider(custom_settings: Optional[Settings] = None) -> LLMProvider:
             timeout=cfg.LLM_TIMEOUT_SECONDS,
             max_retries=cfg.LLM_MAX_RETRIES,
         )
-    elif provider_type == "google":
+    elif provider_type in ("google", "gemini"):
+        model = cfg.LLM_MODEL if "gemini" in cfg.LLM_MODEL.lower() else "gemini-1.5-flash"
         return GoogleProvider(
-            api_key=cfg.LLM_API_KEY,
-            model=cfg.LLM_MODEL,
+            api_key=cfg.GOOGLE_API_KEY or cfg.LLM_API_KEY,
+            model=model,
             timeout=cfg.LLM_TIMEOUT_SECONDS,
             max_retries=cfg.LLM_MAX_RETRIES,
         )

@@ -58,6 +58,9 @@ class Settings(BaseSettings):
     LOCAL_LLM_ENDPOINT: str = "http://localhost:11434/v1"
     LLM_TIMEOUT_SECONDS: float = 30.0
     LLM_MAX_RETRIES: int = 3
+    OPENAI_API_KEY: Optional[str] = None
+    ANTHROPIC_API_KEY: Optional[str] = None
+    GOOGLE_API_KEY: Optional[str] = None
 
     # ML Model Configuration (Track A)
     SENTIMENT_MODEL_NAME: str = "cardiffnlp/twitter-roberta-base-sentiment-latest"
