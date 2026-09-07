@@ -52,6 +52,7 @@ export interface ColumnMapping {
 }
 
 export interface DatasetUploadRequest {
+  file?: File | null;
   column_mapping: ColumnMapping;
   name: string;
   domain: string;

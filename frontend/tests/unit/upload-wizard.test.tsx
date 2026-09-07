@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { UploadWizard } from "@/components/upload/UploadWizard";
@@ -47,5 +47,48 @@ describe("UploadWizard Component", () => {
       expect(screen.getByText("Pipeline Complete!")).toBeInTheDocument();
       expect(screen.getByText("Open Executive Dashboard")).toBeInTheDocument();
     });
+  });
+
+  it("handles custom CSV file upload via file input", async () => {
+    render(<UploadWizard />);
+    const fileInput = document.getElementById("csv-file-input") as HTMLInputElement;
+    expect(fileInput).toBeInTheDocument();
+
+    const csvContent = "feedback_text,created_at,department,score\nGreat campus wifi,2026-09-01,IT,5\nHostel food needs improvement,2026-09-02,Hostel,2";
+    const customFile = new File([csvContent], "custom_campus_feedback.csv", {
+      type: "text/csv",
+    });
+
+    fireEvent.change(fileInput, { target: { files: [customFile] } });
+
+    await waitFor(() => {
+      expect(screen.getByText("custom_campus_feedback.csv")).toBeInTheDocument();
+      expect(screen.getByText("Uploaded File")).toBeInTheDocument();
+      expect(screen.getByText(/Continue to Column Mapping/i).closest("button")).not.toBeDisabled();
+    });
+
+    // Advance to step 2 with custom file
+    fireEvent.click(screen.getByText(/Continue to Column Mapping/i));
+    expect(screen.getByText("Map CSV Columns")).toBeInTheDocument();
+  });
+
+  it("handles resetting back to demo file", async () => {
+    render(<UploadWizard />);
+    const fileInput = document.getElementById("csv-file-input") as HTMLInputElement;
+
+    const customFile = new File(["col1,col2\nval1,val2"], "sample.csv", {
+      type: "text/csv",
+    });
+    fireEvent.change(fileInput, { target: { files: [customFile] } });
+
+    await waitFor(() => {
+      expect(screen.getByText("sample.csv")).toBeInTheDocument();
+    });
+
+    const resetBtn = screen.getByText("Reset to Demo File");
+    fireEvent.click(resetBtn);
+
+    expect(screen.getByText("demo_feedback.csv")).toBeInTheDocument();
+    expect(screen.getByText("Demo Preset")).toBeInTheDocument();
   });
 });

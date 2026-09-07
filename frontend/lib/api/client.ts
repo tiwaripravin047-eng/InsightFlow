@@ -127,6 +127,55 @@ class ApiClient {
         error: null,
       };
     }
+
+    if (req.file) {
+      const formData = new FormData();
+      formData.append("file", req.file);
+      formData.append("name", req.name);
+      formData.append("domain", req.domain);
+      formData.append("column_mapping", JSON.stringify(req.column_mapping));
+
+      const url = `${this.baseUrl}/api/v1/datasets`;
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+        const response = await fetch(url, {
+          method: "POST",
+          body: formData,
+          signal: controller.signal,
+          headers: {
+            Accept: "application/json",
+          },
+        });
+        clearTimeout(timeoutId);
+
+        const json: ApiResponse<DatasetUploadResponse> = await response.json();
+        if (!response.ok && !json.error) {
+          return {
+            data: null,
+            error: {
+              code: `HTTP_${response.status}`,
+              message: response.statusText || "Upload failed",
+            },
+          };
+        }
+        return json;
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error ? err.message : "Network error occurred";
+        return {
+          data: null,
+          error: {
+            code: "NETWORK_ERROR",
+            message: message.includes("abort")
+              ? "Request timed out. Please try again."
+              : "Unable to reach the server. Please check your connection.",
+          },
+        };
+      }
+    }
+
     return this.request<DatasetUploadResponse>("/api/v1/datasets", {
       method: "POST",
       body: JSON.stringify(req),
