@@ -1,11 +1,13 @@
 # Environment and secrets
 .env
-*.env.local
+.env.*
+!.env.example
 
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
 .venv/
 env/
 venv/
@@ -13,14 +15,22 @@ venv/
 dist/
 build/
 
+# Node / Frontend
+node_modules/
+.next/
+
+# Testing & caches
+coverage/
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+
+# OS & Logs
+.DS_Store
+*.log
+
 # IDE
 .vscode/
 .idea/
 
-# Testing & caches
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Logs
-*.log
