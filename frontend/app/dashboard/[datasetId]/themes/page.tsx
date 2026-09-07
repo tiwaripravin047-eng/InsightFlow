@@ -73,16 +73,16 @@ export default function ThemesPage({
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Theme & Sub-Theme Hierarchy"
-        description="BERTopic semantic clusters organized into hierarchical parent themes and granular sub-topic branches."
+        title="Themes"
+        description="Recurring feedback themes organized into high-level categories and sub-topics."
         actions={
           <button
             type="button"
             onClick={() => window.open(`/api/v1/datasets/${datasetId}/export?format=csv`, "_blank")}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border bg-background hover:bg-muted text-foreground transition-colors focus:outline-none focus:ring-1 focus:ring-ring"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border bg-background hover:bg-muted text-foreground transition-colors focus:outline-none focus:ring-1 focus:ring-ring"
           >
             <Download className="w-3.5 h-3.5 text-muted-foreground" aria-hidden="true" />
-            <span>Export Hierarchy</span>
+            <span>Export Themes</span>
           </button>
         }
       />

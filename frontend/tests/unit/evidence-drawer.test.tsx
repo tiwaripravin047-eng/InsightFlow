@@ -63,4 +63,22 @@ describe("EvidenceDrawer Component", () => {
     fireEvent.keyDown(window, { key: "Escape", code: "Escape" });
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
+
+  it("closes when backdrop is clicked", () => {
+    const handleClose = vi.fn();
+    render(
+      <EvidenceDrawer isOpen={true} onClose={handleClose} evidence={mockEvidence} />
+    );
+    const backdrop = screen.getByRole("dialog");
+    fireEvent.click(backdrop);
+    expect(handleClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders export CSV and explore actions when evidence is present", () => {
+    render(
+      <EvidenceDrawer isOpen={true} onClose={vi.fn()} evidence={mockEvidence} />
+    );
+    expect(screen.getByText(/Explore All 214 Matching Records/i)).toBeInTheDocument();
+    expect(screen.getByText(/Export CSV/i)).toBeInTheDocument();
+  });
 });

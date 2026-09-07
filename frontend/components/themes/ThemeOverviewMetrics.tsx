@@ -1,7 +1,6 @@
-import React from "react";
+﻿import React from "react";
 import { Theme } from "@/lib/types/api";
 import { formatPercent } from "@/lib/utils/formatters";
-import { Layers, GitBranch, AlertTriangle, BarChart3 } from "lucide-react";
 
 export interface ThemeOverviewMetricsProps {
   themes: Theme[];
@@ -25,34 +24,31 @@ export const ThemeOverviewMetrics: React.FC<ThemeOverviewMetricsProps> = ({
   )[0];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
       {/* Total Themes */}
-      <div className="rounded-lg border bg-card p-4 shadow-2xs space-y-1">
-        <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
-          <span>Discovered Themes</span>
-          <Layers className="w-4 h-4 text-primary" aria-hidden="true" />
+      <div className="rounded-lg border bg-card p-4 space-y-1">
+        <div className="text-xs font-medium text-muted-foreground">
+          Total Themes
         </div>
-        <div className="text-2xl font-bold text-foreground">{totalThemes}</div>
-        <div className="text-xs text-muted-foreground">Across {totalVolume} total verbatims</div>
+        <div className="text-2xl font-semibold font-mono text-foreground">{totalThemes}</div>
+        <div className="text-xs text-muted-foreground">Across {totalVolume} verbatims</div>
       </div>
 
       {/* Total Sub-Themes */}
-      <div className="rounded-lg border bg-card p-4 shadow-2xs space-y-1">
-        <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
-          <span>Sub-Topic Branches</span>
-          <GitBranch className="w-4 h-4 text-primary" aria-hidden="true" />
+      <div className="rounded-lg border bg-card p-4 space-y-1">
+        <div className="text-xs font-medium text-muted-foreground">
+          Sub-Themes
         </div>
-        <div className="text-2xl font-bold text-foreground">{totalSubThemes}</div>
-        <div className="text-xs text-muted-foreground">Granular topic clusters</div>
+        <div className="text-2xl font-semibold font-mono text-foreground">{totalSubThemes}</div>
+        <div className="text-xs text-muted-foreground">Granular topic branches</div>
       </div>
 
       {/* Leading Volume */}
-      <div className="rounded-lg border bg-card p-4 shadow-2xs space-y-1">
-        <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
-          <span>Dominant Category</span>
-          <BarChart3 className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
+      <div className="rounded-lg border bg-card p-4 space-y-1">
+        <div className="text-xs font-medium text-muted-foreground">
+          Dominant Category
         </div>
-        <div className="text-sm font-bold text-foreground truncate" title={topTheme?.label}>
+        <div className="text-sm font-semibold text-foreground truncate" title={topTheme?.label}>
           {topTheme ? topTheme.label : "—"}
         </div>
         <div className="text-xs text-muted-foreground font-mono">
@@ -61,15 +57,14 @@ export const ThemeOverviewMetrics: React.FC<ThemeOverviewMetricsProps> = ({
       </div>
 
       {/* Highest Negative Ratio */}
-      <div className="rounded-lg border bg-card p-4 shadow-2xs space-y-1">
-        <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
-          <span>Highest Friction</span>
-          <AlertTriangle className="w-4 h-4 text-severity-high-foreground" aria-hidden="true" />
+      <div className="rounded-lg border bg-card p-4 space-y-1">
+        <div className="text-xs font-medium text-muted-foreground">
+          Highest Negative Friction
         </div>
-        <div className="text-sm font-bold text-severity-high-foreground truncate" title={mostNegativeTheme?.label}>
+        <div className="text-sm font-semibold text-foreground truncate" title={mostNegativeTheme?.label}>
           {mostNegativeTheme ? mostNegativeTheme.label : "—"}
         </div>
-        <div className="text-xs text-muted-foreground font-mono">
+        <div className="text-xs text-sentiment-negative-foreground font-mono font-medium">
           {mostNegativeTheme?.sentiment_breakdown?.negative
             ? `${formatPercent(mostNegativeTheme.sentiment_breakdown.negative * 100)} negative`
             : "—"}

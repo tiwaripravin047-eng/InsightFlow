@@ -12,12 +12,12 @@ export const Logo: React.FC<LogoProps> = ({
   className,
   size = "md",
   showText = true,
-  subtitle = "Feedback Intelligence OS",
+  subtitle,
 }) => {
   const iconDimensions = {
-    sm: "w-6 h-6",
-    md: "w-8 h-8",
-    lg: "w-10 h-10",
+    sm: "w-5 h-5",
+    md: "w-6 h-6",
+    lg: "w-8 h-8",
   };
 
   const titleSizes = {
@@ -27,51 +27,46 @@ export const Logo: React.FC<LogoProps> = ({
   };
 
   return (
-    <div className={cn("inline-flex items-center gap-2.5 select-none", className)}>
-      {/* Modern InsightFlow Vector Icon */}
+    <div className={cn("inline-flex items-center gap-2 select-none", className)}>
+      {/* Quiet, professional geometric icon */}
       <div
         className={cn(
           iconDimensions[size],
-          "relative flex items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 via-primary to-violet-600 text-white shadow-xs shrink-0 overflow-hidden ring-1 ring-primary/20"
+          "flex items-center justify-center rounded-md bg-foreground text-background shrink-0 font-mono font-bold text-xs"
         )}
       >
         <svg
-          viewBox="0 0 24 24"
+          viewBox="0 0 20 20"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-4/5 h-4/5"
+          className="w-3.5 h-3.5"
           aria-hidden="true"
         >
-          {/* Wave/Flow Stream lines */}
           <path
-            d="M3 14.5C5.5 14.5 7 11 10.5 11C14 11 15.5 15.5 19 15.5C20.5 15.5 21.5 14.5 22 13.5"
+            d="M3 13.5C5 13.5 6.5 10 9.5 10C12.5 10 14 14 17 14"
             stroke="currentColor"
-            strokeWidth="2.2"
+            strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="opacity-90"
           />
           <path
-            d="M2 9.5C4.5 9.5 6 6 9.5 6C13 6 15 10.5 18.5 10.5C20.2 10.5 21.2 9.8 22 8.5"
+            d="M3 7.5C5 7.5 6.5 5 9.5 5C12.5 5 14 8.5 17 8.5"
             stroke="currentColor"
-            strokeWidth="1.8"
+            strokeWidth="1.6"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="opacity-60"
+            strokeOpacity="0.6"
           />
-          {/* Sparkle/Insight focal dot */}
-          <circle cx="10.5" cy="11" r="1.8" fill="white" />
-          <circle cx="18.5" cy="10.5" r="1.4" fill="white" className="opacity-90" />
         </svg>
       </div>
 
       {showText && (
-        <div className="flex flex-col leading-tight">
-          <span className={cn(titleSizes[size], "font-bold tracking-tight text-foreground flex items-center gap-1")}>
-            Insight<span className="text-primary font-extrabold">Flow</span>
+        <div className="flex flex-col leading-none">
+          <span className={cn(titleSizes[size], "font-semibold tracking-tight text-foreground")}>
+            InsightFlow
           </span>
           {subtitle && (
-            <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-mono">
+            <span className="text-[10px] text-muted-foreground mt-0.5 font-normal">
               {subtitle}
             </span>
           )}

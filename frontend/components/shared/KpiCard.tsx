@@ -1,6 +1,6 @@
-import React from "react";
+﻿import React from "react";
 import { cn } from "@/lib/utils/cn";
-import { ArrowDownRight, ArrowUpRight, Minus } from "lucide-react";
+import { ArrowDown, ArrowUp, Minus } from "lucide-react";
 
 export interface KpiCardProps {
   label: string;
@@ -25,7 +25,7 @@ export const KpiCard: React.FC<KpiCardProps> = ({
 }) => {
   const isClickable = Boolean(onClick);
 
-  let deltaColor = "text-muted-foreground bg-muted";
+  let deltaTextColor = "text-muted-foreground";
   let DeltaIcon = Minus;
 
   if (delta) {
@@ -33,11 +33,11 @@ export const KpiCard: React.FC<KpiCardProps> = ({
     const isBetter = delta.isInverse ? delta.value < 0 : delta.value > 0;
 
     if (isBetter) {
-      deltaColor = "text-sentiment-positive-foreground bg-sentiment-positive-bg border border-sentiment-positive-border";
-      DeltaIcon = ArrowUpRight;
+      deltaTextColor = "text-sentiment-positive-foreground";
+      DeltaIcon = ArrowUp;
     } else if (isWorse) {
-      deltaColor = "text-sentiment-negative-foreground bg-sentiment-negative-bg border border-sentiment-negative-border";
-      DeltaIcon = ArrowDownRight;
+      deltaTextColor = "text-sentiment-negative-foreground";
+      DeltaIcon = ArrowDown;
     }
   }
 
@@ -53,43 +53,36 @@ export const KpiCard: React.FC<KpiCardProps> = ({
       tabIndex={isClickable ? 0 : undefined}
       role={isClickable ? "button" : undefined}
       className={cn(
-        "rounded-lg border bg-card p-5 shadow-sm transition-all text-card-foreground",
+        "rounded-lg border bg-card p-4 transition-colors text-card-foreground",
         isClickable &&
-          "cursor-pointer hover:border-primary/50 hover:shadow-md focus-visible:ring-2 focus-visible:ring-primary",
+          "cursor-pointer hover:bg-muted/30 hover:border-foreground/20 focus-visible:ring-1 focus-visible:ring-ring",
         className
       )}
     >
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          {label}
+      <div className="text-xs font-medium text-muted-foreground">
+        {label}
+      </div>
+
+      <div className="mt-1 flex items-baseline gap-2">
+        <span className="text-2xl font-semibold tracking-tight text-foreground font-mono">
+          {value}
         </span>
-        {delta && (
-          <span
-            className={cn(
-              "inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-xs font-semibold select-none",
-              deltaColor
-            )}
-          >
+        {subValue && (
+          <span className="text-xs text-muted-foreground truncate">{subValue}</span>
+        )}
+      </div>
+
+      {delta && (
+        <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
+          <span className={cn("inline-flex items-center gap-0.5 font-medium", deltaTextColor)}>
             <DeltaIcon className="w-3 h-3" aria-hidden="true" />
             <span>
               {delta.value > 0 ? "+" : ""}
               {delta.value}%
             </span>
           </span>
-        )}
-      </div>
-
-      <div className="mt-2 flex items-baseline gap-2">
-        <span className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-          {value}
-        </span>
-        {subValue && (
-          <span className="text-xs text-muted-foreground">{subValue}</span>
-        )}
-      </div>
-
-      {delta?.label && (
-        <p className="mt-1 text-xs text-muted-foreground">{delta.label}</p>
+          {delta.label && <span>{delta.label}</span>}
+        </div>
       )}
     </div>
   );

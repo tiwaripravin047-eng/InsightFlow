@@ -73,8 +73,12 @@ export const CreateActionModal: React.FC<CreateActionModalProps> = ({
       role="dialog"
       aria-modal="true"
       aria-labelledby="create-action-title"
+      onClick={onClose}
     >
-      <div className="w-full max-w-md rounded-lg border bg-card p-5 shadow-xl animate-in fade-in zoom-in-95 duration-150">
+      <div
+        className="w-full max-w-md rounded-lg border bg-card p-5 shadow-xl animate-in fade-in zoom-in-95 duration-150"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between pb-3 border-b">
           <div className="flex items-center gap-2">
             <CheckSquare className="w-4 h-4 text-primary" aria-hidden="true" />

@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { IssueRadar } from "@/components/dashboard/IssueRadar";
@@ -65,13 +65,13 @@ describe("IssueRadar Component", () => {
   it("renders priority issues auto-ranked by score descending", () => {
     render(<IssueRadar insights={mockInsights} onOpenEvidence={vi.fn()} />);
 
-    expect(screen.getByText("Priority Issue Radar")).toBeInTheDocument();
+    expect(screen.getByText("Prioritized Issues")).toBeInTheDocument();
     expect(screen.getByText("Wi-Fi Disconnections in Library")).toBeInTheDocument();
     expect(screen.getByText("Food Quality Issues")).toBeInTheDocument();
 
     // Check priority scores displayed
-    expect(screen.getByText("92")).toBeInTheDocument();
-    expect(screen.getByText("87")).toBeInTheDocument();
+    expect(screen.getByText("#92")).toBeInTheDocument();
+    expect(screen.getByText("#87")).toBeInTheDocument();
   });
 
   it("calls onOpenEvidence when evidence button is clicked", () => {

@@ -96,7 +96,7 @@ export default function FeedbackExplorerPage({
     <div className="space-y-6">
       <PageHeader
         title="Feedback Explorer"
-        description="Filterable verbatim repository with semantic classifications, emotions, and aspect sentiments."
+        description="Repository of raw customer verbatims, metadata, and extracted sentiments."
         actions={
           <button
             type="button"

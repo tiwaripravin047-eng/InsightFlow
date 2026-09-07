@@ -70,8 +70,8 @@ export default function TrendsPage({ params }: TrendsPageProps) {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Trends & Matrix Analysis"
-        description="Sentiment over time, 4-quadrant Issue Matrix (Frequency × Severity), and Period-over-Period shifts."
+        title="Trends"
+        description="Tracking feedback shifts, recurring complaint volume, and period-over-period changes."
       />
 
       {error ? (

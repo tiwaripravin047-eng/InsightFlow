@@ -1,15 +1,17 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils/cn";
-import { Database, Search } from "lucide-react";
+import { Database, Search, Menu } from "lucide-react";
 import { Logo } from "@/components/shared/Logo";
 
 export interface TopBarProps {
   currentDatasetId: string;
   datasets?: Array<{ id: string; name: string }>;
   className?: string;
+  onToggleMobileNav?: () => void;
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
@@ -19,6 +21,7 @@ export const TopBar: React.FC<TopBarProps> = ({
     { id: "city-hospital-q2", name: "City Hospital Patient Experience" },
   ],
   className,
+  onToggleMobileNav,
 }) => {
   const router = useRouter();
 
@@ -30,20 +33,30 @@ export const TopBar: React.FC<TopBarProps> = ({
   return (
     <header
       className={cn(
-        "h-14 border-b bg-card px-4 flex items-center justify-between gap-4 select-none shrink-0 z-20",
+        "h-13 border-b bg-card px-4 flex items-center justify-between gap-4 select-none shrink-0 z-20",
         className
       )}
     >
       {/* Brand & Dataset Selector */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
+        {onToggleMobileNav && (
+          <button
+            type="button"
+            onClick={onToggleMobileNav}
+            aria-label="Toggle navigation menu"
+            className="md:hidden p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+          >
+            <Menu className="w-4 h-4" aria-hidden="true" />
+          </button>
+        )}
         <Link
           href={`/dashboard/${currentDatasetId}/overview`}
-          className="md:hidden hover:opacity-90 transition-opacity focus:outline-none focus:ring-1 focus:ring-ring rounded-md"
+          className="md:hidden hover:opacity-90 transition-opacity focus:outline-none focus:ring-1 focus:ring-ring rounded"
         >
           <Logo size="sm" showText={false} />
         </Link>
         <div className="flex items-center gap-2">
-          <Database className="w-4 h-4 text-muted-foreground shrink-0" aria-hidden="true" />
+          <Database className="w-3.5 h-3.5 text-muted-foreground shrink-0" aria-hidden="true" />
           <label htmlFor="dataset-selector" className="sr-only">
             Select Active Dataset
           </label>
@@ -52,7 +65,7 @@ export const TopBar: React.FC<TopBarProps> = ({
             value={currentDatasetId}
             onChange={handleDatasetChange}
             suppressHydrationWarning
-            className="text-xs font-semibold bg-background border border-input rounded-md px-2.5 py-1.5 text-foreground focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer max-w-xs"
+            className="text-xs font-medium bg-background border border-input rounded px-2 py-1 text-foreground focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer max-w-xs"
           >
             {datasets.map((d) => (
               <option key={d.id} value={d.id}>
@@ -63,24 +76,20 @@ export const TopBar: React.FC<TopBarProps> = ({
         </div>
       </div>
 
-      {/* Global Quick Actions & Mode Indicator */}
-      <div className="flex items-center gap-3">
+      {/* Global Search & Honest Mode Indicator */}
+      <div className="flex items-center gap-2.5">
         <button
           type="button"
           onClick={() => router.push(`/dashboard/${currentDatasetId}/ask`)}
-          className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted-foreground bg-muted/60 hover:bg-muted rounded-md border transition-colors focus:outline-none focus:ring-1 focus:ring-ring"
+          className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground bg-muted/40 hover:bg-muted/70 rounded border transition-colors focus:outline-none focus:ring-1 focus:ring-ring"
         >
-          <Search className="w-3.5 h-3.5" aria-hidden="true" />
-          <span>Ask question about dataset...</span>
-          <kbd className="ml-2 text-[10px] font-mono bg-background border px-1.5 py-0.5 rounded text-muted-foreground">
-            Ask AI
-          </kbd>
+          <Search className="w-3 h-3" aria-hidden="true" />
+          <span>Search or query feedback...</span>
         </button>
 
-        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Mocks Active</span>
-        </div>
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono text-muted-foreground bg-muted border">
+          <span>Demo Data</span>
+        </span>
       </div>
     </header>
   );

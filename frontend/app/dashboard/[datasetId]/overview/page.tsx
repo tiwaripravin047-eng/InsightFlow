@@ -21,7 +21,7 @@ import {
   PeriodCompareResponse,
   EvidenceResponse,
 } from "@/lib/types/api";
-import { Sparkles, Download } from "lucide-react";
+import { Download } from "lucide-react";
 
 export default function OverviewPage({
   params,
@@ -90,24 +90,18 @@ export default function OverviewPage({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Page Header */}
       <PageHeader
-        title="Executive Overview"
-        description="Executive pulse, ranked operational risks, and explainable evidence layer."
-        badge={
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
-            <Sparkles className="w-3 h-3" aria-hidden="true" />
-            Active
-          </span>
-        }
+        title="Overview"
+        description="Key metrics, emerging operational risks, and customer feedback shifts."
         actions={
           <button
             type="button"
             onClick={() => window.open(`/api/v1/datasets/${datasetId}/export?format=csv`, "_blank")}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border bg-background hover:bg-muted text-foreground transition-colors focus:outline-none focus:ring-1 focus:ring-ring"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border bg-background hover:bg-muted text-foreground transition-colors focus:outline-none focus:ring-1 focus:ring-ring"
           >
             <Download className="w-3.5 h-3.5 text-muted-foreground" aria-hidden="true" />
-            <span>Export View</span>
+            <span>Export CSV</span>
           </button>
         }
       />

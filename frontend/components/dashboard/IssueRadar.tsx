@@ -1,10 +1,10 @@
-import React from "react";
+﻿import React from "react";
 import { Insight } from "@/lib/types/api";
 import { SeverityBadge } from "@/components/shared/SeverityBadge";
 import { SentimentBadge } from "@/components/shared/SentimentBadge";
 import { TrendBadge } from "@/components/shared/TrendBadge";
 import { formatPercent } from "@/lib/utils/formatters";
-import { Radar, FileText, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export interface IssueRadarProps {
   insights: Insight[];
@@ -21,58 +21,60 @@ export const IssueRadar: React.FC<IssueRadarProps> = ({
   const sorted = [...insights].sort((a, b) => b.priority_score - a.priority_score);
 
   return (
-    <div className="rounded-lg border bg-card shadow-2xs overflow-hidden">
+    <section
+      aria-labelledby="prioritized-issues-title"
+      className="rounded-lg border bg-card shadow-2xs overflow-hidden"
+    >
       {/* Header */}
       <div className="p-4 border-b flex flex-wrap items-center justify-between gap-3 bg-muted/20">
-        <div className="flex items-center gap-2">
-          <Radar className="w-4 h-4 text-primary" aria-hidden="true" />
-          <h2 className="text-sm font-bold tracking-tight text-foreground">
-            Priority Issue Radar
+        <div>
+          <h2 id="prioritized-issues-title" className="text-sm font-semibold text-foreground">
+            Prioritized Issues
           </h2>
-          <span className="text-[11px] font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded">
-            Ranked by Priority Formula
-          </span>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Ranked by impact, recurrence rate, and negative sentiment concentration.
+          </p>
         </div>
-        <span className="text-xs text-muted-foreground">
-          Showing {sorted.length} prioritized issues
+        <span className="text-xs text-muted-foreground font-mono">
+          {sorted.length} issues identified
         </span>
       </div>
 
       {/* Responsive Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs border-collapse">
-          <thead className="bg-muted/40 text-[11px] uppercase tracking-wider text-muted-foreground font-semibold border-b">
+          <thead className="bg-muted/40 text-[11px] uppercase tracking-wider text-muted-foreground font-medium border-b">
             <tr>
-              <th scope="col" className="px-4 py-3 text-center w-12">Score</th>
-              <th scope="col" className="px-4 py-3">Issue Title & Topic</th>
-              <th scope="col" className="px-4 py-3">Severity</th>
-              <th scope="col" className="px-4 py-3">Sentiment</th>
-              <th scope="col" className="px-4 py-3">Trend</th>
-              <th scope="col" className="px-4 py-3 text-right">Volume</th>
-              <th scope="col" className="px-4 py-3 text-right">Confidence</th>
-              <th scope="col" className="px-4 py-3 text-center">Evidence</th>
+              <th scope="col" className="px-4 py-2.5 text-center w-14">Priority</th>
+              <th scope="col" className="px-4 py-2.5">Issue & Category</th>
+              <th scope="col" className="px-4 py-2.5">Severity</th>
+              <th scope="col" className="px-4 py-2.5">Sentiment</th>
+              <th scope="col" className="px-4 py-2.5">Trend</th>
+              <th scope="col" className="px-4 py-2.5 text-right">Volume</th>
+              <th scope="col" className="px-4 py-2.5 text-right">Confidence</th>
+              <th scope="col" className="px-4 py-2.5 text-center w-24">Action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
             {sorted.map((item) => (
               <tr
                 key={item.id}
-                className="hover:bg-muted/40 transition-colors group"
+                className="hover:bg-muted/30 transition-colors"
               >
-                {/* Priority Score Bubble */}
+                {/* Priority Score Column */}
                 <td className="px-4 py-3 text-center">
-                  <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 font-mono font-bold text-xs text-primary border border-primary/20">
-                    {item.priority_score}
-                  </div>
+                  <span className="font-mono font-semibold text-xs text-foreground">
+                    #{item.priority_score}
+                  </span>
                 </td>
 
                 {/* Title & Topic & Categories */}
                 <td className="px-4 py-3">
-                  <div className="font-semibold text-foreground leading-snug">
+                  <div className="font-medium text-foreground">
                     {item.title}
                   </div>
-                  <div className="flex flex-wrap items-center gap-1.5 mt-1 text-[11px] text-muted-foreground">
-                    <span className="font-medium text-foreground/80">{item.topic_label}</span>
+                  <div className="flex flex-wrap items-center gap-1.5 mt-0.5 text-[11px] text-muted-foreground">
+                    <span className="font-normal">{item.topic_label}</span>
                     <span>•</span>
                     <span>{item.affected_categories.join(", ")}</span>
                   </div>
@@ -94,7 +96,7 @@ export const IssueRadar: React.FC<IssueRadarProps> = ({
                 </td>
 
                 {/* Volume */}
-                <td className="px-4 py-3 text-right font-mono font-medium">
+                <td className="px-4 py-3 text-right font-mono text-muted-foreground">
                   {item.volume}
                 </td>
 
@@ -109,10 +111,10 @@ export const IssueRadar: React.FC<IssueRadarProps> = ({
                     type="button"
                     onClick={() => onOpenEvidence(item.id)}
                     aria-label={`View evidence for ${item.title}`}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-secondary hover:bg-secondary/80 text-secondary-foreground text-xs font-medium focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
+                    className="inline-flex items-center gap-1 text-xs font-medium text-foreground hover:text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-ring rounded"
                   >
-                    <FileText className="w-3.5 h-3.5" aria-hidden="true" />
                     <span>Evidence</span>
+                    <ArrowRight className="w-3 h-3" aria-hidden="true" />
                   </button>
                 </td>
               </tr>
@@ -120,6 +122,6 @@ export const IssueRadar: React.FC<IssueRadarProps> = ({
           </tbody>
         </table>
       </div>
-    </div>
+    </section>
   );
 };
